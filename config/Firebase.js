@@ -1,0 +1,24 @@
+import firebase from "firebase";
+import {
+    API_KEY,
+    AUTH_DOMAIN,
+    // DATABASE_URL,
+    PROJECT_ID,
+    MESSAGE_SENDER_ID,
+    APP_ID
+} from 'react-native-dotenv';
+
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+    apiKey: API_KEY,
+    authDomain: AUTH_DOMAIN,
+    projectId: PROJECT_ID,
+    // databaseURL: DATABASE_URL,
+    storageBucket: '',
+    messagingSenderId: MESSAGE_SENDER_ID,
+    appId: APP_ID
+};
+
+const Firebase = firebase.initializeApp(firebaseConfig)
+
+export default Firebase;
