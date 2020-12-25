@@ -1,22 +1,16 @@
 import React from 'react';
 import {View, Text, TextInput, TouchableOpacity, Button, StyleSheet} from 'react-native';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {login, updateEmail, updatePassword} from '../actions/user';
 
 import Firebase from "../config/Firebase";
 
 class Login extends React.Component {
 
     handleLogin = () => {
-        const {email, password} = this.state
-
-        Firebase.auth()
-            .signInWithEmailAndPassword(email, password)
-            .then(() => this.props.navigation.navigate('Profile'))
-            .catch(error => console.log(error))
-    }
-
-    state = {
-        email: '',
-        password: ''
+        this.props.login()
+        this.props.navigation.navigate('Profile')
     }
 
     render() {
@@ -24,15 +18,15 @@ class Login extends React.Component {
             <View style={styles.container}>
                 <TextInput
                     style={styles.inputBox}
-                    value={this.state.email}
-                    onChangeText={email => this.setState({email})}
+                    value={this.props.user.email}
+                    onChangeText={email => this.props.updateEmail(email)}
                     placeholder='Email'
                     autoCapitalize='none'
                 />
                 <TextInput
                     style={styles.inputBox}
-                    value={this.state.password}
-                    onChangeText={password => this.setState({password})}
+                    value={this.props.user.password}
+                    onChangeText={password => this.props.updatePassword(password)}
                     placeholder='Password'
                     secureTextEntry={true}
                 />
@@ -47,7 +41,21 @@ class Login extends React.Component {
     }
 }
 
-export default Login;
+
+const mapDispatchToProps = dispatch => {
+    return bindActionCreators({updateEmail, updatePassword, login}, dispatch)
+}
+
+const mapStateToProps = state => {
+    return {
+        user: state.user
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Login)
 
 const styles = StyleSheet.create({
     container: {
